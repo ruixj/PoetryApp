@@ -39,6 +39,11 @@
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-circuitbreaker-reactor-resilience4j</artifactId>
     </dependency>
+    <!-- Common -->
+    <dependency>
+      <groupId>com.poetryapp</groupId>
+      <artifactId>common</artifactId>
+    </dependency>
     <!-- JWT -->
     <dependency>
       <groupId>io.jsonwebtoken</groupId>
