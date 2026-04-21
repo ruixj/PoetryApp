@@ -16,13 +16,11 @@ spring:
     username: root
     password: ${MYSQL_PASSWORD:root@123}
     driver-class-name: com.mysql.cj.jdbc.Driver
-  jpa:
-    hibernate:
-      ddl-auto: validate
-    show-sql: false
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
+  mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+    default-enum-type-handler: org.apache.ibatis.type.EnumTypeHandler
+  type-aliases-package: com.poetryapp.auth.entity
 
 jwt:
   secret: ${JWT_SECRET:cG9ldHJ5QXBwU2VjcmV0S2V5MjAyNF9TdXBlclNlY3VyZV9CYXNlNjRfRW5jb2RlZF9LZXk=}

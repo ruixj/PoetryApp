@@ -32,7 +32,7 @@ public class LearningService {
                 UserPoemLibrary lib = new UserPoemLibrary();
                 lib.setUserId(userId);
                 lib.setPoemId(poem.getId());
-                libraryRepo.save(lib);
+                libraryRepo.insert(lib);
             }
         }
     }
@@ -45,7 +45,7 @@ public class LearningService {
             UserPoemLibrary lib = new UserPoemLibrary();
             lib.setUserId(userId);
             lib.setPoemId(poemId);
-            libraryRepo.save(lib);
+            libraryRepo.insert(lib);
         }
     }
 
@@ -74,7 +74,11 @@ public class LearningService {
             progress.setCompletedAt(java.time.LocalDateTime.now());
             justCompleted = true;
         }
-        progressRepo.save(progress);
+        if (progress.getId() == null) {
+            progressRepo.insert(progress);
+        } else {
+            progressRepo.update(progress);
+        }
 
         int totalCompleted = progressRepo.countCompletedByUserId(userId);
         String level = calcLevel(totalCompleted);
@@ -90,7 +94,7 @@ public class LearningService {
         UserPoemProgress progress = progressRepo.findByUserIdAndPoemId(userId, poemId)
                 .orElseThrow(() -> new BusinessException("进度记录不存在"));
         progress.setRecordingUrl(url);
-        progressRepo.save(progress);
+        progressRepo.update(progress);
     }
 
     /** 获取已完成的古诗（用于个人页面回放） */

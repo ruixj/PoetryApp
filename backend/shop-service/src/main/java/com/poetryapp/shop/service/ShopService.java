@@ -7,8 +7,6 @@ import com.poetryapp.shop.entity.*;
 import com.poetryapp.shop.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,8 +26,8 @@ public class ShopService {
     private final UserShopRefRepository userRepo;
 
     // ── 商品 ──────────────────────────────────────────
-    public Page<ShopItem> listItems(int page, int size) {
-        return itemRepo.findByStatus("ON_SHELF", PageRequest.of(page, size));
+    public List<ShopItem> listItems(int page, int size) {
+        return itemRepo.findByStatus("ON_SHELF", page * size, size);
     }
 
     public ShopItem getItem(Long itemId) {
@@ -47,13 +45,13 @@ public class ShopService {
         cartRepo.findByUserIdAndItemId(userId, itemId)
                 .ifPresentOrElse(existing -> {
                     existing.setQuantity(existing.getQuantity() + quantity);
-                    cartRepo.save(existing);
+                    cartRepo.update(existing);
                 }, () -> {
                     CartItem cart = new CartItem();
                     cart.setUserId(userId);
                     cart.setItemId(itemId);
                     cart.setQuantity(quantity);
-                    cartRepo.save(cart);
+                    cartRepo.insert(cart);
                 });
     }
 
@@ -101,7 +99,7 @@ public class ShopService {
         order.setShippingName(req.getShippingName());
         order.setShippingPhone(req.getShippingPhone());
         order.setShippingAddress(req.getShippingAddress());
-        orderRepo.save(order);
+        orderRepo.insert(order);
 
         // 创建订单项，扣减库存
         for (CartItem ci : cartItems) {
@@ -113,10 +111,10 @@ public class ShopService {
             oi.setItemImage(item.getImageUrl());
             oi.setQuantity(ci.getQuantity());
             oi.setPointsCost(item.getPointsCost());
-            orderItemRepo.save(oi);
+            orderItemRepo.insert(oi);
 
             item.setStock(item.getStock() - ci.getQuantity());
-            itemRepo.save(item);
+            itemRepo.update(item);
         }
 
         // 扣减积分

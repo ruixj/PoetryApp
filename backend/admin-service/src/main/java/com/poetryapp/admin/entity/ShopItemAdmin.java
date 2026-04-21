@@ -1,10 +1,10 @@
-package com.poetryapp.shop.entity;
+package com.poetryapp.admin.entity;
 
 import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class ShopItem {
+public class ShopItemAdmin {
     private Long id;
     private String name;
     private String description;

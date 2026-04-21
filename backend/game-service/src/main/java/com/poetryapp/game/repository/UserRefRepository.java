@@ -1,12 +1,19 @@
 package com.poetryapp.game.repository;
 
 import com.poetryapp.game.entity.UserRef;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
-public interface UserRefRepository extends JpaRepository<UserRef, Long> {
-    @Modifying
-    @Query("UPDATE UserRef u SET u.yuanbaoPoints = u.yuanbaoPoints + :points WHERE u.id = :userId")
-    void addPoints(Long userId, int points);
+import java.util.Optional;
+
+@Mapper
+public interface UserRefRepository {
+
+    @Select("SELECT id, nickname, avatar_url, yuanbao_points FROM users WHERE id = #{userId}")
+    Optional<UserRef> findById(Long userId);
+
+    @Update("UPDATE users SET yuanbao_points = yuanbao_points + #{points} WHERE id = #{userId}")
+    void addPoints(@Param("userId") Long userId, @Param("points") int points);
 }

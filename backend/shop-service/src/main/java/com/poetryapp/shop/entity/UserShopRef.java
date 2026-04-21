@@ -1,11 +1,9 @@
 package com.poetryapp.shop.entity;
 
-import jakarta.persistence.*;
 import lombok.Data;
 
-@Data @Entity @Table(name = "users")
+@Data
 public class UserShopRef {
-    @Id private Long id;
-    @Column(name = "yuanbao_points")
+    private Long id;
     private Integer yuanbaoPoints = 0;
 }

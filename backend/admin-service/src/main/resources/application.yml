@@ -20,13 +20,10 @@ spring:
     multipart:
       max-file-size: 100MB
       max-request-size: 100MB
-  jpa:
-    hibernate:
-      ddl-auto: validate
-    show-sql: false
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
+  mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  type-aliases-package: com.poetryapp.admin.entity
 
 upload:
   path: ${UPLOAD_PATH:./uploads}

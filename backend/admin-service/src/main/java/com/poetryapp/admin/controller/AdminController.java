@@ -1,6 +1,8 @@
 package com.poetryapp.admin.controller;
 
 import com.poetryapp.admin.dto.*;
+import com.poetryapp.admin.entity.PoemAdmin;
+import com.poetryapp.admin.entity.ShopItemAdmin;
 import com.poetryapp.admin.service.AdminService;
 import com.poetryapp.common.exception.BusinessException;
 import com.poetryapp.common.exception.GlobalExceptionHandler;
@@ -8,11 +10,11 @@ import com.poetryapp.common.response.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -29,7 +31,7 @@ public class AdminController {
 
     // ── 用户管理 ─────────────────────────────────────────────
     @GetMapping("/users")
-    public ApiResponse<Page<UserSummary>> listUsers(
+    public ApiResponse<List<UserSummary>> listUsers(
             @RequestHeader("X-User-Role") String role,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size) {
@@ -66,6 +68,24 @@ public class AdminController {
     }
 
     // ── 古诗管理 ─────────────────────────────────────────────
+    @GetMapping("/poems")
+    public ApiResponse<List<PoemAdmin>> listPoems(
+            @RequestHeader("X-User-Role") String role,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size) {
+        requireAdmin(role);
+        return ApiResponse.success(adminService.listPoems(page, size));
+    }
+
+    @DeleteMapping("/poems/{poemId}")
+    public ApiResponse<Void> deletePoem(
+            @RequestHeader("X-User-Role") String role,
+            @PathVariable Long poemId) {
+        requireAdmin(role);
+        adminService.deletePoem(poemId);
+        return ApiResponse.success("已删除", null);
+    }
+
     @PostMapping("/poems")
     public ApiResponse<Long> createPoem(
             @RequestHeader("X-User-Role") String role,
@@ -125,6 +145,15 @@ public class AdminController {
     }
 
     // ── 商城管理 ─────────────────────────────────────────────
+    @GetMapping("/shop/items")
+    public ApiResponse<List<ShopItemAdmin>> listShopItems(
+            @RequestHeader("X-User-Role") String role,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size) {
+        requireAdmin(role);
+        return ApiResponse.success(adminService.listShopItems(page, size));
+    }
+
     @PostMapping("/shop/items")
     public ApiResponse<Void> createShopItem(
             @RequestHeader("X-User-Role") String role,
@@ -145,7 +174,7 @@ public class AdminController {
     }
 
     @GetMapping("/shop/orders")
-    public ApiResponse<Page<OrderSummary>> listOrders(
+    public ApiResponse<List<OrderSummary>> listOrders(
             @RequestHeader("X-User-Role") String role,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size,

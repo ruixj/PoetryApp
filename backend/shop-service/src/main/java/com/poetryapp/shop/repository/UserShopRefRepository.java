@@ -1,12 +1,19 @@
 package com.poetryapp.shop.repository;
 
 import com.poetryapp.shop.entity.UserShopRef;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
-public interface UserShopRefRepository extends JpaRepository<UserShopRef, Long> {
-    @Modifying
-    @Query("UPDATE UserShopRef u SET u.yuanbaoPoints = u.yuanbaoPoints - :points WHERE u.id = :userId")
-    int deductPoints(Long userId, int points);
+import java.util.Optional;
+
+@Mapper
+public interface UserShopRefRepository {
+
+    @Select("SELECT id, yuanbao_points FROM users WHERE id = #{id}")
+    Optional<UserShopRef> findById(Long id);
+
+    @Update("UPDATE users SET yuanbao_points = yuanbao_points - #{points} WHERE id = #{userId}")
+    int deductPoints(@Param("userId") Long userId, @Param("points") int points);
 }

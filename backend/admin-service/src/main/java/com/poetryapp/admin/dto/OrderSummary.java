@@ -1,18 +1,17 @@
-package com.poetryapp.shop.entity;
+package com.poetryapp.admin.dto;
 
 import lombok.Data;
-import java.time.LocalDateTime;
 
 @Data
-public class Order {
+public class OrderSummary {
     private Long id;
     private String orderNo;
     private Long userId;
+    private String userNickname;
     private Integer totalPoints;
     private String shippingName;
     private String shippingPhone;
     private String shippingAddress;
-    private String status = "PENDING";
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private String status;
+    private String createdAt;
 }

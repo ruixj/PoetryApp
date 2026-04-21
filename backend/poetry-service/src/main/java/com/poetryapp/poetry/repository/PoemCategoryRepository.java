@@ -1,14 +1,21 @@
 package com.poetryapp.poetry.repository;
 
 import com.poetryapp.poetry.entity.PoemCategory;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.apache.ibatis.annotations.*;
+
 import java.util.List;
 
-public interface PoemCategoryRepository extends JpaRepository<PoemCategory, Long> {
+@Mapper
+public interface PoemCategoryRepository {
+
+    @Select("SELECT * FROM poem_categories WHERE poem_id = #{poemId}")
     List<PoemCategory> findByPoemId(Long poemId);
 
-    /** 按分类类型查询所有不重复的值 */
-    @org.springframework.data.jpa.repository.Query(
-        "SELECT DISTINCT c.categoryValue FROM PoemCategory c WHERE c.categoryType = :type ORDER BY c.categoryValue")
+    @Select("SELECT DISTINCT category_value FROM poem_categories WHERE category_type = #{type} ORDER BY category_value")
     List<String> findDistinctValuesByType(String type);
+
+    @Insert("INSERT INTO poem_categories(poem_id, category_type, category_value) "
+          + "VALUES(#{poemId}, #{categoryType}, #{categoryValue})")
+    @Options(useGeneratedKeys = true, keyProperty = "id")
+    void insert(PoemCategory category);
 }

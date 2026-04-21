@@ -16,11 +16,12 @@ spring:
     username: root
     password: ${MYSQL_PASSWORD:root@123}
     driver-class-name: com.mysql.cj.jdbc.Driver
-  jpa:
-    hibernate:
-      ddl-auto: validate
-    show-sql: false
-  servlet:
+  mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  type-aliases-package: com.poetryapp.user.entity
+
+servlet:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB

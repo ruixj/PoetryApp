@@ -8,7 +8,6 @@ import com.poetryapp.shop.service.ShopService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +23,7 @@ public class ShopController {
 
     /** 商品列表 */
     @GetMapping("/items")
-    public ApiResponse<Page<ShopItem>> listItems(
+    public ApiResponse<List<ShopItem>> listItems(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size) {
         return ApiResponse.success(shopService.listItems(page, size));

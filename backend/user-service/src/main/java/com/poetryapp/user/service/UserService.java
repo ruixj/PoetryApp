@@ -48,7 +48,7 @@ public class UserService {
         }
         // 首次设置完成后标记
         user.setIsFirstLogin(false);
-        userRepo.save(user);
+        userRepo.update(user);
         return toResponse(user, 0);
     }
 
@@ -72,7 +72,7 @@ public class UserService {
         String url = uploadBaseUrl + "/uploads/avatars/" + filename;
         User user = getUser(userId);
         user.setAvatarUrl(url);
-        userRepo.save(user);
+        userRepo.update(user);
 
         log.info("头像上传成功: userId={}, url={}", userId, url);
         return url;

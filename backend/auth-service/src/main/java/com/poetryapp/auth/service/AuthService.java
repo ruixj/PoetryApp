@@ -42,7 +42,7 @@ public class AuthService {
         smsCode.setPhone(phone);
         smsCode.setCode(code);
         smsCode.setExpiresAt(LocalDateTime.now().plusMinutes(5));
-        smsCodeRepo.save(smsCode);
+        smsCodeRepo.insert(smsCode);
 
         smsService.send(phone, code);
         log.info("短信验证码已发送, phone={}", phone);
@@ -62,7 +62,7 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(req.getPassword()));
         user.setNickname(req.getNickname() != null && !req.getNickname().isBlank()
                 ? req.getNickname() : NicknameGenerator.generate());
-        user = userRepo.save(user);
+        userRepo.insert(user);
 
         return buildLoginResponse(user);
     }
@@ -103,14 +103,13 @@ public class AuthService {
                     record.setLogoutTime(now);
                     long minutes = ChronoUnit.MINUTES.between(record.getLoginTime(), now);
                     record.setDurationMinutes((int) minutes);
-                    loginRecordRepo.save(record);
+                    loginRecordRepo.update(record);
 
                     // 累计学习时长
                     userRepo.findById(userId).ifPresent(u -> {
                         u.setTotalStudyMinutes(u.getTotalStudyMinutes() + (int) minutes);
-                        // 非首次登录后标记
                         u.setIsFirstLogin(false);
-                        userRepo.save(u);
+                        userRepo.update(u);
                     });
                     log.info("用户退出, userId={}, 本次时长={}min", userId, minutes);
                 });
@@ -127,14 +126,14 @@ public class AuthService {
         }
 
         smsCode.setIsUsed(true);
-        smsCodeRepo.save(smsCode);
+        smsCodeRepo.update(smsCode);
     }
 
     private void recordLogin(Long userId) {
         LoginRecord record = new LoginRecord();
         record.setUserId(userId);
         record.setLoginTime(LocalDateTime.now());
-        loginRecordRepo.save(record);
+        loginRecordRepo.insert(record);
     }
 
     private LoginResponse buildLoginResponse(User user) {

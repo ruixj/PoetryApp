@@ -1,9 +1,14 @@
 package com.poetryapp.poetry.repository;
 
 import com.poetryapp.poetry.entity.Grade;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+
 import java.util.List;
 
-public interface GradeRepository extends JpaRepository<Grade, Long> {
+@Mapper
+public interface GradeRepository {
+
+    @Select("SELECT * FROM grades WHERE textbook_id = #{textbookId} ORDER BY order_num ASC")
     List<Grade> findByTextbookIdOrderByOrderNumAsc(Long textbookId);
 }

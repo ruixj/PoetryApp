@@ -16,10 +16,10 @@ spring:
     username: root
     password: ${MYSQL_PASSWORD:root@123}
     driver-class-name: com.mysql.cj.jdbc.Driver
-  jpa:
-    hibernate:
-      ddl-auto: validate
-    show-sql: false
+  mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  type-aliases-package: com.poetryapp.game.entity
 
 logging:
   config: classpath:log4j2.xml

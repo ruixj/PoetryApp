@@ -1,10 +1,10 @@
-package com.poetryapp.poetry.entity;
+package com.poetryapp.admin.entity;
 
 import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class Poem {
+public class PoemAdmin {
     private Long id;
     private String title;
     private String author;

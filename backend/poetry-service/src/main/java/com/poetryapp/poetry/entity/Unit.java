@@ -1,10 +1,14 @@
 package com.poetryapp.poetry.entity;
 
-import jakarta.persistence.*;
 import lombok.Data;
 
-@Data @Entity @Table(name = "units")
+@Data
 public class Unit {
+    private Long id;
+    private String name;
+    private Long gradeId;
+    private Integer orderNum = 0;
+}
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "grade_id", nullable = false)
