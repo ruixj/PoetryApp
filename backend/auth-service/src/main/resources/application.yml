@@ -1,0 +1,45 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: auth-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_SERVER_ADDR:localhost:8848}
+      config:
+        server-addr: ${NACOS_SERVER_ADDR:localhost:8848}
+        file-extension: yaml
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/poetry_app?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=utf8mb4&allowPublicKeyRetrieval=true
+    username: root
+    password: ${MYSQL_PASSWORD:root@123}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+
+jwt:
+  secret: ${JWT_SECRET:cG9ldHJ5QXBwU2VjcmV0S2V5MjAyNF9TdXBlclNlY3VyZV9CYXNlNjRfRW5jb2RlZF9LZXk=}
+
+aliyun:
+  sms:
+    enabled: ${SMS_ENABLED:false}
+    access-key-id: ${SMS_ACCESS_KEY_ID:your-access-key-id}
+    access-key-secret: ${SMS_ACCESS_KEY_SECRET:your-access-key-secret}
+    sign-name: ${SMS_SIGN_NAME:诗韵童学}
+    template-code: ${SMS_TEMPLATE_CODE:SMS_XXXXXXXX}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+logging:
+  config: classpath:log4j2.xml

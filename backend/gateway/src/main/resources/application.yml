@@ -1,0 +1,117 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_SERVER_ADDR:localhost:8848}
+      config:
+        server-addr: ${NACOS_SERVER_ADDR:localhost:8848}
+        file-extension: yaml
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/api/auth/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: auth-cb
+                fallbackUri: forward:/fallback
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 20
+                redis-rate-limiter.burstCapacity: 40
+
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/api/user/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: user-cb
+                fallbackUri: forward:/fallback
+
+        - id: poetry-service
+          uri: lb://poetry-service
+          predicates:
+            - Path=/api/poetry/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: poetry-cb
+                fallbackUri: forward:/fallback
+
+        - id: game-service
+          uri: lb://game-service
+          predicates:
+            - Path=/api/game/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: game-cb
+                fallbackUri: forward:/fallback
+
+        - id: shop-service
+          uri: lb://shop-service
+          predicates:
+            - Path=/api/shop/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: shop-cb
+                fallbackUri: forward:/fallback
+
+        - id: admin-service
+          uri: lb://admin-service
+          predicates:
+            - Path=/api/admin/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: admin-cb
+                fallbackUri: forward:/fallback
+
+      # 全局跨域
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOriginPatterns: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+            allowCredentials: true
+            maxAge: 3600
+
+jwt:
+  secret: ${JWT_SECRET:cG9ldHJ5QXBwU2VjcmV0S2V5MjAyNF9TdXBlclNlY3VyZV9CYXNlNjRfRW5jb2RlZF9LZXk=}
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 3
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  config: classpath:log4j2.xml

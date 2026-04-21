@@ -1,0 +1,121 @@
+/* 登录页专用样式 */
+
+.login-page {
+  min-height: 100vh;
+  background: linear-gradient(160deg, #1a0a05, #3D1A0A, #6B2D0E, #8B1A1A);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 浮动汉字背景装饰 */
+.login-deco {
+  position: absolute;
+  font-family: 'ZCOOL XiaoWei', serif;
+  color: rgba(201,168,76,0.12);
+  pointer-events: none;
+  user-select: none;
+  animation: floatChar linear infinite;
+}
+
+@keyframes floatChar {
+  0%   { transform: translateY(100vh) rotate(0deg);   opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translateY(-100px) rotate(20deg); opacity: 0; }
+}
+
+/* 登录卡片 */
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  background: rgba(253,250,242,0.96);
+  border-radius: 16px;
+  border: 2px solid rgba(201,168,76,0.5);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4),
+              inset 0 1px 0 rgba(255,255,255,0.8);
+  padding: 32px 28px;
+  position: relative;
+  z-index: 1;
+}
+
+.login-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  border-radius: 16px 16px 0 0;
+  background: linear-gradient(90deg, #8B1A1A, #C9A84C, #8B1A1A);
+}
+
+.login-logo {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.login-logo .app-icon {
+  font-size: 48px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.login-logo .app-name {
+  font-family: 'ZCOOL XiaoWei', serif;
+  font-size: 26px;
+  color: #8B1A1A;
+  letter-spacing: 6px;
+}
+
+.login-logo .app-slogan {
+  font-size: 13px;
+  color: #888;
+  letter-spacing: 2px;
+  margin-top: 4px;
+}
+
+/* Tab 样式覆盖 */
+.login-card .ant-tabs-tab {
+  font-family: 'ZCOOL XiaoWei', serif;
+  font-size: 15px;
+  letter-spacing: 2px;
+}
+
+.login-card .ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: #8B1A1A !important;
+}
+
+.login-card .ant-tabs-ink-bar {
+  background: #8B1A1A !important;
+}
+
+/* 登录按钮 */
+.login-btn {
+  height: 48px !important;
+  font-size: 16px !important;
+  letter-spacing: 4px !important;
+  background: linear-gradient(135deg, #8B1A1A, #C9512C) !important;
+  border: none !important;
+  border-radius: 8px !important;
+  font-family: 'ZCOOL XiaoWei', serif !important;
+}
+
+.login-btn:hover {
+  background: linear-gradient(135deg, #A52020, #D9612C) !important;
+}
+
+/* 发送验证码按钮 */
+.sms-btn {
+  background: rgba(139,26,26,0.1) !important;
+  border-color: #8B1A1A !important;
+  color: #8B1A1A !important;
+  font-size: 12px !important;
+}
+
+.sms-btn:disabled {
+  color: #aaa !important;
+  border-color: #ddd !important;
+  background: #f5f5f5 !important;
+}
