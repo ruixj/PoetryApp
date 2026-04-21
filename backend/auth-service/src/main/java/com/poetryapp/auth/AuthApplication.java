@@ -29,7 +29,7 @@ public class AuthApplication {
             userRepo.findByPhone("13800000000").ifPresent(admin -> {
                 if ("PENDING_INIT".equals(admin.getPassword())) {
                     admin.setPassword(passwordEncoder.encode("Admin@123"));
-                    userRepo.save(admin);
+                    userRepo.update(admin);
                     log.info("管理员账号初始化完成，初始密码: Admin@123，请登录后立即修改！");
                 }
             });
