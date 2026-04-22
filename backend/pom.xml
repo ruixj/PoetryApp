@@ -84,6 +84,11 @@
   </dependencyManagement>
 
   <dependencies>
+    <!-- Caffeine cache for Spring Cloud LoadBalancer (replaces default cache in production) -->
+    <dependency>
+      <groupId>com.github.ben-manes.caffeine</groupId>
+      <artifactId>caffeine</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
