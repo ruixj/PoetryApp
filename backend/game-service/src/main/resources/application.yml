@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: game-service
+  config:
+    import: optional:nacos:${spring.application.name}.yaml
   cloud:
     nacos:
       discovery:

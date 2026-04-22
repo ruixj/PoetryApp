@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: shop-service
+  config:
+    import: optional:nacos:${spring.application.name}.yaml
   cloud:
     nacos:
       discovery:
