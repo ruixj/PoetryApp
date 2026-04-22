@@ -6,6 +6,10 @@ spring:
     name: gateway
   config:
     import: optional:nacos:${spring.application.name}.yaml
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: 6379
   cloud:
     nacos:
       discovery:
@@ -28,6 +32,11 @@ spring:
               args:
                 name: auth-cb
                 fallbackUri: forward:/fallback
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 20
+                redis-rate-limiter.burstCapacity: 40
+                key-resolver: "#{@ipKeyResolver}"
 
         - id: user-service
           uri: lb://user-service
