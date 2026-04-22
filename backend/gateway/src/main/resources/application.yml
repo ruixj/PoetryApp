@@ -28,10 +28,6 @@ spring:
               args:
                 name: auth-cb
                 fallbackUri: forward:/fallback
-            - name: RequestRateLimiter
-              args:
-                redis-rate-limiter.replenishRate: 20
-                redis-rate-limiter.burstCapacity: 40
 
         - id: user-service
           uri: lb://user-service
